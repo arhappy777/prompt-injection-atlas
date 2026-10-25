@@ -1,63 +1,65 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#101e31" />
     <link rel="manifest" href="./manifest.webmanifest" />
     <meta name="color-scheme" content="light" />
-    <title>Атлас промпт-инъекций</title>
+    <title>Prompt Injection Atlas</title>
     <link rel="stylesheet" href="./styles.css" />
+    <script src="./i18n.js" defer></script>
     <script src="./data.js" defer></script>
     <script src="./app.js" defer></script>
     <script src="./pwa.js" defer></script>
   </head>
-  <body>
+  <body data-title-key="doc.title.index">
     <div class="app-shell">
       <header class="topbar">
         <div class="brand">
           <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
           <div>
-            <p class="brand-name">Атлас промпт-инъекций</p>
-            <p class="brand-subtitle">Читай → понимай → проверяй</p>
+            <p class="brand-name" data-i18n="brand.name">Prompt Injection Atlas</p>
+            <p class="brand-subtitle" data-i18n="index.subtitle">Read → understand → test</p>
           </div>
         </div>
         <div class="topbar-right">
-          <span class="edition">Учебный справочник · 2026</span>
-          <a class="source-jump" href="./catalog.html">Полный каталог ↗</a>
-          <a class="source-jump" href="#sources">Источники <span aria-hidden="true">↗</span></a>
+          <span class="edition" data-i18n="index.edition">Study handbook · 2026</span>
+          <a class="source-jump" href="./catalog.html" data-i18n="index.fullCatalog">Full catalog ↗</a>
+          <a class="source-jump" href="#sources"><span data-i18n="index.sourcesJump">Sources</span> <span aria-hidden="true">↗</span></a>
+          <span id="lang-toggle-slot"></span>
         </div>
       </header>
 
       <div class="intro">
         <div>
-          <h1>От техники к проверке</h1>
-          <p>Здесь 14 подробных учебных разборов. <a href="./catalog.html">Полный каталог</a> содержит более 2 тысяч учтённых записей восьми источников: методы, стратегии, пробы, статьи и работы. Их количество не равно числу уникальных техник.</p>
+          <h1 data-i18n="index.h1">From technique to test</h1>
+          <p data-i18n-html="index.intro">Fourteen detailed study walkthroughs.</p>
         </div>
         <div class="progress" aria-live="polite">
           <span class="progress-value" id="progress-value">0 / 0</span>
-          <span class="progress-label">изучено</span>
+          <span class="progress-label" data-i18n="index.studied">studied</span>
           <div class="progress-track"><span id="progress-fill"></span></div>
         </div>
       </div>
 
       <main class="workspace">
-        <aside class="sidebar" aria-label="Каталог техник">
+        <aside class="sidebar" aria-label="Technique catalog">
           <div class="sidebar-top">
-            <label for="search">Найти технику</label>
+            <label for="search" data-i18n="index.findLabel">Find a technique</label>
             <div class="search-wrap">
               <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.3"></circle><path d="m15.5 15.5 5 5"></path></svg>
-              <input id="search" type="search" placeholder="Название, поверхность, механизм…" autocomplete="off" />
+              <input id="search" type="search" data-i18n-ph="index.findPh" placeholder="Name, surface, mechanism…" autocomplete="off" />
             </div>
-            <div class="filters" role="group" aria-label="Тип техники">
-              <button class="filter active" data-filter="all" type="button" aria-pressed="true">Все</button>
-              <button class="filter" data-filter="direct" type="button" aria-pressed="false">Прямые</button>
-              <button class="filter" data-filter="indirect" type="button" aria-pressed="false">Непрямые</button>
+            <div class="filters" role="group" aria-label="Technique type">
+              <button class="filter active" data-filter="all" type="button" aria-pressed="true" data-i18n="filter.all">All</button>
+              <button class="filter" data-filter="direct" type="button" aria-pressed="false" data-i18n="filter.direct">Direct</button>
+              <button class="filter" data-filter="indirect" type="button" aria-pressed="false" data-i18n="filter.indirect">Indirect</button>
             </div>
-            <div class="list-heading"><span>Подробные разборы</span><span id="result-count">0</span></div>
+            <div class="list-heading"><span data-i18n="index.listHeading">Detailed walkthroughs</span><span id="result-count">0</span></div>
           </div>
-          <nav id="technique-list" class="technique-list" aria-label="Выбор техники"></nav>
-          <div class="sidebar-note"><span class="note-dot"></span> Примеры используют только учебный маркер «МАЯК».</div>
+          <nav id="technique-list" class="technique-list" aria-label="Technique selection"></nav>
+          <div class="sidebar-note"><span class="note-dot"></span> <span data-i18n="index.markerNote">Examples use only the training marker “BEACON”.</span></div>
         </aside>
 
         <article class="detail" id="detail" aria-live="polite"></article>
@@ -66,14 +68,14 @@
       <section class="sources-section" id="sources" aria-labelledby="sources-title">
         <div class="section-header">
           <div>
-            <h2 id="sources-title">Библиотека источников</h2>
-            <p>Ссылки, с которых собран справочник. Инструменты и бенчмарки здесь отделены от самих техник.</p>
+            <h2 id="sources-title" data-i18n="index.sourcesTitle">Source library</h2>
+            <p data-i18n="index.sourcesDesc">The links this handbook was built from.</p>
           </div>
-          <span>8 источников</span>
+          <span data-i18n="index.sourcesCount">8 sources</span>
         </div>
         <div class="source-grid" id="source-grid"></div>
       </section>
-      <footer>Локальный учебный справочник · примеры и критерии проверки составлены для этого приложения.</footer>
+      <footer data-i18n="index.footer">Local study handbook · examples and test criteria were written for this app.</footer>
     </div>
   </body>
 </html>

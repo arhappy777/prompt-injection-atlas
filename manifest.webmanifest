@@ -1,8 +1,8 @@
 {
-  "name": "Атлас промпт-инъекций",
-  "short_name": "PI Атлас",
-  "description": "Учебный справочник по техникам промпт-инъекций с первоисточниками",
-  "lang": "ru",
+  "name": "Prompt Injection Atlas",
+  "short_name": "PI Atlas",
+  "description": "A bilingual reference of prompt-injection techniques with primary sources, for authorized agent testing.",
+  "lang": "en",
   "start_url": "./catalog.html",
   "scope": "./",
   "display": "standalone",

@@ -1,14 +1,15 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101e31">
   <link rel="manifest" href="./manifest.webmanifest">
-  <title>Полный каталог источников · Атлас промпт-инъекций</title>
+  <title>Full source catalog · Prompt Injection Atlas</title>
   <link rel="stylesheet" href="./catalog.css">
   <link rel="stylesheet" href="./notes.css">
   <link rel="stylesheet" href="./mobile.css">
+  <script src="./i18n.js" defer></script>
   <script src="./inventory.js" defer></script>
   <script src="./method-notes.js" defer></script>
   <script src="./curated-notes.js" defer></script>
@@ -17,44 +18,38 @@
   <script src="./catalog.js" defer></script>
   <script src="./pwa.js" defer></script>
 </head>
-<body>
+<body data-title-key="doc.title.catalog">
   <header class="top">
-    <a href="./index.html" class="back">← Подробные разборы</a>
-    <div><strong>Атлас промпт-инъекций</strong><span>Полный проверяемый каталог</span></div>
-    <span id="snapshot-date"></span>
+    <a href="./index.html" class="back" data-i18n="cat.back">← Detailed walkthroughs</a>
+    <div><strong data-i18n="brand.name">Prompt Injection Atlas</strong><span data-i18n="cat.brandSub">Full verifiable catalog</span></div>
+    <span id="lang-toggle-slot"></span>
   </header>
   <section class="intro">
     <div>
-      <p class="eyebrow">Восемь источников · срез на дату загрузки</p>
-      <h1>Реестр восьми источников</h1>
-      <p>Слева — все строки выбранных таблиц, модулей, проб и индексов публикаций. Справа — описание, применение и прямая ссылка. Число записей не равно числу уникальных техник: некоторые работы содержат несколько методов, а часть механизмов названа в источнике только агрегированно.</p>
+      <p class="eyebrow" data-i18n="cat.eyebrow">Eight sources</p>
+      <h1 data-i18n="cat.h1">Register of eight sources</h1>
+      <p data-i18n-html="cat.intro">On the left, every row of the selected tables, modules, probes and publication indexes. On the right, a description, an example use, and the direct link.</p>
     </div>
-    <div class="metrics"><strong id="total-count">0</strong><span>записей с первоисточником</span><small id="technique-count"></small></div>
+    <div class="metrics"><strong id="total-count">0</strong><span data-i18n="cat.metricUnit">entries with a primary source</span><small id="technique-count"></small></div>
   </section>
   <main class="layout" id="catalog-layout">
     <aside class="sidebar">
-      <label for="search">Поиск по каталогу</label>
-      <input id="search" type="search" placeholder="Название, категория, описание…" autocomplete="off">
-      <label for="source">Источник</label>
-      <select id="source"><option value="all">Все 8 источников</option></select>
-      <label for="kind">Тип записи</label>
-      <select id="kind"><option value="all">Все типы</option></select>
-      <div class="mode" role="group" aria-label="Тип записей">
-        <button type="button" class="active" data-mode="methods" aria-pressed="true">Способы и компоненты</button>
-        <button type="button" data-mode="research" aria-pressed="false">Статьи и работы</button>
-        <button type="button" data-mode="all" aria-pressed="false">Всё</button>
+      <label for="search" data-i18n="cat.searchLabel">Search the catalog</label>
+      <input id="search" type="search" data-i18n-ph="cat.searchPh" placeholder="Name, category, description…" autocomplete="off">
+      <label for="source" data-i18n="cat.sourceLabel">Source</label>
+      <select id="source"></select>
+      <label for="kind" data-i18n="cat.kindLabel">Entry type</label>
+      <select id="kind"></select>
+      <div class="mode" role="group" aria-label="Entry type">
+        <button type="button" class="active" data-mode="methods" aria-pressed="true" data-i18n="cat.modeMethods">Methods &amp; components</button>
+        <button type="button" data-mode="research" aria-pressed="false" data-i18n="cat.modeResearch">Articles &amp; papers</button>
+        <button type="button" data-mode="all" aria-pressed="false" data-i18n="cat.modeAll">Everything</button>
       </div>
       <p class="list-count" id="list-count"></p>
-      <nav id="records" aria-label="Записи каталога"></nav>
-      <button id="more" type="button" hidden>Показать ещё 100</button>
+      <nav id="records" aria-label="Catalog entries"></nav>
+      <button id="more" type="button" hidden data-i18n="cat.more">Show 100 more</button>
     </aside>
     <article id="detail" class="detail" aria-live="polite"></article>
   </main>
-  <section class="coverage">
-    <h2>Покрытие и единицы счёта</h2>
-    <p>Список формируется из опубликованных на дату снимка строк таблиц, модулей и метаданных. Статья, публикация, проба и реализация могут описывать один и тот же метод. Варианты и служебные модули помечены отдельно. Для всех 944 работ из ML Sanity доступны аннотации arXiv и краткий машинный перевод; полные тексты работ не анализировались. Полные тексты вредоносных проб не копируются. Полноту скрытых внутри научных работ методов нельзя доказать только по индексам и аннотациям.</p>
-    <div id="coverage-grid"></div>
-    <p>Для пошаговых учебных примеров с безопасным маркером открой <a href="./index.html">подробные разборы</a>. Это отдельная редакторская подборка.</p>
-  </section>
 </body>
 </html>

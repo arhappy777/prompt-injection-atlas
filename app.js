@@ -1,6 +1,7 @@
 (() => {
   "use strict";
 
+  const I18N = window.ATLAS_I18N;
   const techniques = window.GUIDE_TECHNIQUES;
   const sources = window.GUIDE_SOURCES;
   const list = document.getElementById("technique-list");
@@ -9,11 +10,14 @@
   const filters = [...document.querySelectorAll(".filter")];
   const storageKey = "prompt-injection-guide:studied:v1";
 
+  const L = () => I18N.lang;
+  const t = (item) => item[L()];
+
   let studied = new Set();
   try {
     const stored = JSON.parse(localStorage.getItem(storageKey) || "[]");
     if (Array.isArray(stored)) studied = new Set(stored.filter(id => techniques.some(item => item.id === id)));
-  } catch { /* Прогресс необязателен: справочник работает и без storage. */ }
+  } catch { /* progress optional: the handbook works without storage */ }
 
   let filter = "all";
   let selectedId = techniques.some(item => item.id === decodeURIComponent(location.hash.slice(1)))
@@ -25,12 +29,13 @@
   })[char]);
 
   function visibleTechniques() {
-    const query = search.value.trim().toLocaleLowerCase("ru");
+    const query = search.value.trim().toLocaleLowerCase();
     return techniques.filter(item => {
       if (filter !== "all" && item.type !== filter) return false;
       if (!query) return true;
-      return [item.title, item.subtitle, item.surface, item.boundary, item.mechanism]
-        .some(value => value.toLocaleLowerCase("ru").includes(query));
+      const c = t(item);
+      return [c.title, c.subtitle, c.surface, c.boundary, c.mechanism]
+        .some(value => value.toLocaleLowerCase().includes(query));
     });
   }
 
@@ -45,12 +50,13 @@
     if (!items.length) {
       const empty = document.createElement("p");
       empty.className = "empty-list";
-      empty.textContent = "По этому запросу ничего не найдено. Попробуй другое слово или сбрось фильтр.";
+      empty.textContent = I18N.t("wt.empty");
       list.append(empty);
       return;
     }
 
     for (const item of items) {
+      const c = t(item);
       const button = document.createElement("button");
       button.type = "button";
       button.className = `technique${item.id === selectedId ? " selected" : ""}`;
@@ -64,14 +70,14 @@
       copy.className = "technique-copy";
       const title = document.createElement("span");
       title.className = "technique-title";
-      title.textContent = item.title;
+      title.textContent = c.title;
       const subtitle = document.createElement("span");
       subtitle.className = "technique-subtitle";
-      subtitle.textContent = item.subtitle;
+      subtitle.textContent = c.subtitle;
       copy.append(title, subtitle);
       const check = document.createElement("span");
       check.className = "technique-check";
-      check.setAttribute("aria-label", studied.has(item.id) ? "Изучено" : "");
+      check.setAttribute("aria-label", studied.has(item.id) ? I18N.t("wt.studiedAria") : "");
       check.textContent = studied.has(item.id) ? "✓" : "";
       button.append(index, copy, check);
       button.addEventListener("click", () => select(item.id, true));
@@ -82,44 +88,45 @@
   function renderDetail() {
     const item = techniques.find(technique => technique.id === selectedId);
     if (!item) {
-      detail.innerHTML = '<div class="no-detail"><h2>Ничего не найдено</h2><p>Измени поиск или фильтр, чтобы открыть технику.</p></div>';
+      detail.innerHTML = `<div class="no-detail"><h2>${escapeHtml(I18N.t("wt.notFound"))}</h2><p>${escapeHtml(I18N.t("wt.notFoundHint"))}</p></div>`;
       return;
     }
+    const c = t(item);
     const number = String(techniques.indexOf(item) + 1).padStart(2, "0");
-    const typeName = item.type === "direct" ? "Прямая инъекция" : "Непрямая инъекция";
-    const links = item.links.map(link => `<a href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.label)} ↗</a>`).join("");
+    const typeName = item.type === "direct" ? I18N.t("wt.direct") : I18N.t("wt.indirect");
+    const links = item.links.map(link => `<a href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(link[L()])} ↗</a>`).join("");
     detail.innerHTML = `
       <div class="detail-topline">
-        <div class="breadcrumbs"><span>Каталог</span><span aria-hidden="true">/</span><span class="current">${typeName}</span></div>
+        <div class="breadcrumbs"><span>${escapeHtml(I18N.t("wt.breadcrumb"))}</span><span aria-hidden="true">/</span><span class="current">${typeName}</span></div>
         <span class="detail-number">${number} / ${String(techniques.length).padStart(2, "0")}</span>
       </div>
-      <h2>${escapeHtml(item.title)}</h2>
-      <p class="detail-lead">${escapeHtml(item.lead)}</p>
-      <div class="chips"><span class="chip ${item.type}">${typeName}</span><span class="chip">${escapeHtml(item.level)}</span><span class="chip">≈ ${escapeHtml(item.time)}</span></div>
+      <h2>${escapeHtml(c.title)}</h2>
+      <p class="detail-lead">${escapeHtml(c.lead)}</p>
+      <div class="chips"><span class="chip ${item.type}">${typeName}</span><span class="chip">${escapeHtml(c.level)}</span><span class="chip">≈ ${escapeHtml(c.time)}</span></div>
       <div class="boundary">
-        <div class="boundary-cell"><span class="eyebrow">Где находится</span><strong>${escapeHtml(item.surface)}</strong></div>
-        <div class="boundary-cell"><span class="eyebrow">Граница доверия</span><strong>${escapeHtml(item.boundary)}</strong></div>
+        <div class="boundary-cell"><span class="eyebrow">${escapeHtml(I18N.t("wt.surface"))}</span><strong>${escapeHtml(c.surface)}</strong></div>
+        <div class="boundary-cell"><span class="eyebrow">${escapeHtml(I18N.t("wt.boundary"))}</span><strong>${escapeHtml(c.boundary)}</strong></div>
       </div>
       <div class="detail-grid">
         <div>
-          <section class="content-section"><h3>Как это работает</h3><p>${escapeHtml(item.mechanism)}</p></section>
-          <section class="content-section"><h3>Лабораторный пример</h3><p><strong>Исходное правило:</strong> ${escapeHtml(item.baseline)}</p>
-            <div class="example"><span class="example-label">Тестовый материал</span><pre>${escapeHtml(item.example)}</pre><div class="example-tools"><button class="copy-btn" type="button" id="copy-example">Скопировать пример ↗</button></div></div>
+          <section class="content-section"><h3>${escapeHtml(I18N.t("wt.mechanism"))}</h3><p>${escapeHtml(c.mechanism)}</p></section>
+          <section class="content-section"><h3>${escapeHtml(I18N.t("wt.labExample"))}</h3><p><strong>${escapeHtml(I18N.t("wt.baseline"))}</strong> ${escapeHtml(c.baseline)}</p>
+            <div class="example"><span class="example-label">${escapeHtml(I18N.t("wt.material"))}</span><pre>${escapeHtml(c.example)}</pre><div class="example-tools"><button class="copy-btn" type="button" id="copy-example">${escapeHtml(I18N.t("wt.copyExample"))}</button></div></div>
           </section>
-          <section class="content-section"><h3>Как проверить</h3><ol class="steps">${item.steps.map(step => `<li>${escapeHtml(step)}</li>`).join("")}</ol></section>
+          <section class="content-section"><h3>${escapeHtml(I18N.t("wt.howToTest"))}</h3><ol class="steps">${c.steps.map(step => `<li>${escapeHtml(step)}</li>`).join("")}</ol></section>
         </div>
         <div class="results-rail">
-          <div class="mini-panel good"><h3>✓ Граница удержана</h3><p>${escapeHtml(item.pass)}</p></div>
-          <div class="mini-panel bad"><h3>↗ Возможный сбой</h3><p>${escapeHtml(item.fail)}</p></div>
-          <div class="mini-panel"><h3>Что исправлять</h3><p>${escapeHtml(item.fix)}</p></div>
+          <div class="mini-panel good"><h3>${escapeHtml(I18N.t("wt.pass"))}</h3><p>${escapeHtml(c.pass)}</p></div>
+          <div class="mini-panel bad"><h3>${escapeHtml(I18N.t("wt.fail"))}</h3><p>${escapeHtml(c.fail)}</p></div>
+          <div class="mini-panel"><h3>${escapeHtml(I18N.t("wt.fix"))}</h3><p>${escapeHtml(c.fix)}</p></div>
         </div>
       </div>
-      <div class="detail-source"><span>Разобрать первоисточник</span>${links}</div>
-      <div class="detail-actions"><button class="mark-btn${studied.has(item.id) ? " done" : ""}" type="button" id="mark-studied" aria-pressed="${studied.has(item.id)}">${studied.has(item.id) ? "✓ Изучено" : "Отметить изученным"}</button><button class="next-btn" type="button" id="next-technique">Следующая техника →</button></div>`;
+      <div class="detail-source"><span>${escapeHtml(I18N.t("wt.source"))}</span>${links}</div>
+      <div class="detail-actions"><button class="mark-btn${studied.has(item.id) ? " done" : ""}" type="button" id="mark-studied" aria-pressed="${studied.has(item.id)}">${studied.has(item.id) ? escapeHtml(I18N.t("wt.markDone")) : escapeHtml(I18N.t("wt.markTodo"))}</button><button class="next-btn" type="button" id="next-technique">${escapeHtml(I18N.t("wt.next"))}</button></div>`;
 
     document.getElementById("mark-studied").addEventListener("click", () => {
       if (studied.has(item.id)) studied.delete(item.id); else studied.add(item.id);
-      try { localStorage.setItem(storageKey, JSON.stringify([...studied])); } catch { /* см. выше */ }
+      try { localStorage.setItem(storageKey, JSON.stringify([...studied])); } catch { /* see above */ }
       updateProgress();
       renderList(visibleTechniques());
       renderDetail();
@@ -133,11 +140,11 @@
       const button = event.currentTarget;
       let copied = false;
       try {
-        await navigator.clipboard.writeText(item.example);
+        await navigator.clipboard.writeText(c.example);
         copied = true;
       } catch {
         const field = document.createElement("textarea");
-        field.value = item.example;
+        field.value = c.example;
         field.style.position = "fixed";
         field.style.opacity = "0";
         document.body.append(field);
@@ -145,7 +152,7 @@
         copied = document.execCommand("copy");
         field.remove();
       }
-      button.textContent = copied ? "Скопировано ✓" : "Не удалось скопировать";
+      button.textContent = copied ? I18N.t("wt.copied") : I18N.t("wt.copyFail");
     });
   }
 
@@ -159,13 +166,15 @@
 
   function renderSources() {
     const grid = document.getElementById("source-grid");
+    grid.replaceChildren();
     for (const source of sources) {
+      const c = source[L()];
       const link = document.createElement("a");
       link.className = "source-card";
       link.href = source.url;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
-      link.innerHTML = `<span class="source-type">${escapeHtml(source.type)} ↗</span><strong>${escapeHtml(source.title)}</strong><span class="source-desc">${escapeHtml(source.desc)}</span>`;
+      link.innerHTML = `<span class="source-type">${escapeHtml(c.type)} ↗</span><strong>${escapeHtml(c.title)}</strong><span class="source-desc">${escapeHtml(c.desc)}</span>`;
       grid.append(link);
     }
   }
@@ -204,8 +213,13 @@
     }
   });
 
-  renderSources();
-  updateProgress();
-  renderList(visibleTechniques());
-  renderDetail();
+  function renderAll() {
+    renderSources();
+    updateProgress();
+    renderList(visibleTechniques());
+    renderDetail();
+  }
+
+  renderAll();
+  I18N.onChange(renderAll);
 })();

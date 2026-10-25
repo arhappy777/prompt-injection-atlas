@@ -1,7 +1,7 @@
-const CACHE_NAME = "prompt-injection-atlas-2026-10-25-v1";
+const CACHE_NAME = "prompt-injection-atlas-v2";
 const FILES = [
   "./", "./index.html", "./catalog.html", "./styles.css", "./catalog.css",
-  "./notes.css", "./mobile.css", "./app.js", "./catalog.js", "./data.js",
+  "./notes.css", "./mobile.css", "./i18n.js", "./app.js", "./catalog.js", "./data.js",
   "./inventory.js", "./method-notes.js", "./curated-notes.js",
   "./paper-abstracts.js", "./paper-notes.js", "./pwa.js",
   "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"
