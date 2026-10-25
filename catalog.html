@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101e31">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <title>Полный каталог источников · Атлас промпт-инъекций</title>
+  <link rel="stylesheet" href="./catalog.css">
+  <link rel="stylesheet" href="./notes.css">
+  <link rel="stylesheet" href="./mobile.css">
+  <script src="./inventory.js" defer></script>
+  <script src="./method-notes.js" defer></script>
+  <script src="./curated-notes.js" defer></script>
+  <script src="./paper-abstracts.js" defer></script>
+  <script src="./paper-notes.js" defer></script>
+  <script src="./catalog.js" defer></script>
+  <script src="./pwa.js" defer></script>
+</head>
+<body>
+  <header class="top">
+    <a href="./index.html" class="back">← Подробные разборы</a>
+    <div><strong>Атлас промпт-инъекций</strong><span>Полный проверяемый каталог</span></div>
+    <span id="snapshot-date"></span>
+  </header>
+  <section class="intro">
+    <div>
+      <p class="eyebrow">Восемь источников · срез на дату загрузки</p>
+      <h1>Реестр восьми источников</h1>
+      <p>Слева — все строки выбранных таблиц, модулей, проб и индексов публикаций. Справа — описание, применение и прямая ссылка. Число записей не равно числу уникальных техник: некоторые работы содержат несколько методов, а часть механизмов названа в источнике только агрегированно.</p>
+    </div>
+    <div class="metrics"><strong id="total-count">0</strong><span>записей с первоисточником</span><small id="technique-count"></small></div>
+  </section>
+  <main class="layout" id="catalog-layout">
+    <aside class="sidebar">
+      <label for="search">Поиск по каталогу</label>
+      <input id="search" type="search" placeholder="Название, категория, описание…" autocomplete="off">
+      <label for="source">Источник</label>
+      <select id="source"><option value="all">Все 8 источников</option></select>
+      <label for="kind">Тип записи</label>
+      <select id="kind"><option value="all">Все типы</option></select>
+      <div class="mode" role="group" aria-label="Тип записей">
+        <button type="button" class="active" data-mode="methods" aria-pressed="true">Способы и компоненты</button>
+        <button type="button" data-mode="research" aria-pressed="false">Статьи и работы</button>
+        <button type="button" data-mode="all" aria-pressed="false">Всё</button>
+      </div>
+      <p class="list-count" id="list-count"></p>
+      <nav id="records" aria-label="Записи каталога"></nav>
+      <button id="more" type="button" hidden>Показать ещё 100</button>
+    </aside>
+    <article id="detail" class="detail" aria-live="polite"></article>
+  </main>
+  <section class="coverage">
+    <h2>Покрытие и единицы счёта</h2>
+    <p>Список формируется из опубликованных на дату снимка строк таблиц, модулей и метаданных. Статья, публикация, проба и реализация могут описывать один и тот же метод. Варианты и служебные модули помечены отдельно. Для всех 944 работ из ML Sanity доступны аннотации arXiv и краткий машинный перевод; полные тексты работ не анализировались. Полные тексты вредоносных проб не копируются. Полноту скрытых внутри научных работ методов нельзя доказать только по индексам и аннотациям.</p>
+    <div id="coverage-grid"></div>
+    <p>Для пошаговых учебных примеров с безопасным маркером открой <a href="./index.html">подробные разборы</a>. Это отдельная редакторская подборка.</p>
+  </section>
+</body>
+</html>

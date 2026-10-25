@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#101e31" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <meta name="color-scheme" content="light" />
+    <title>Атлас промпт-инъекций</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./data.js" defer></script>
+    <script src="./app.js" defer></script>
+    <script src="./pwa.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+          <div>
+            <p class="brand-name">Атлас промпт-инъекций</p>
+            <p class="brand-subtitle">Читай → понимай → проверяй</p>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <span class="edition">Учебный справочник · 2026</span>
+          <a class="source-jump" href="./catalog.html">Полный каталог ↗</a>
+          <a class="source-jump" href="#sources">Источники <span aria-hidden="true">↗</span></a>
+        </div>
+      </header>
+
+      <div class="intro">
+        <div>
+          <h1>От техники к проверке</h1>
+          <p>Здесь 14 подробных учебных разборов. <a href="./catalog.html">Полный каталог</a> содержит более 2 тысяч учтённых записей восьми источников: методы, стратегии, пробы, статьи и работы. Их количество не равно числу уникальных техник.</p>
+        </div>
+        <div class="progress" aria-live="polite">
+          <span class="progress-value" id="progress-value">0 / 0</span>
+          <span class="progress-label">изучено</span>
+          <div class="progress-track"><span id="progress-fill"></span></div>
+        </div>
+      </div>
+
+      <main class="workspace">
+        <aside class="sidebar" aria-label="Каталог техник">
+          <div class="sidebar-top">
+            <label for="search">Найти технику</label>
+            <div class="search-wrap">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.3"></circle><path d="m15.5 15.5 5 5"></path></svg>
+              <input id="search" type="search" placeholder="Название, поверхность, механизм…" autocomplete="off" />
+            </div>
+            <div class="filters" role="group" aria-label="Тип техники">
+              <button class="filter active" data-filter="all" type="button" aria-pressed="true">Все</button>
+              <button class="filter" data-filter="direct" type="button" aria-pressed="false">Прямые</button>
+              <button class="filter" data-filter="indirect" type="button" aria-pressed="false">Непрямые</button>
+            </div>
+            <div class="list-heading"><span>Подробные разборы</span><span id="result-count">0</span></div>
+          </div>
+          <nav id="technique-list" class="technique-list" aria-label="Выбор техники"></nav>
+          <div class="sidebar-note"><span class="note-dot"></span> Примеры используют только учебный маркер «МАЯК».</div>
+        </aside>
+
+        <article class="detail" id="detail" aria-live="polite"></article>
+      </main>
+
+      <section class="sources-section" id="sources" aria-labelledby="sources-title">
+        <div class="section-header">
+          <div>
+            <h2 id="sources-title">Библиотека источников</h2>
+            <p>Ссылки, с которых собран справочник. Инструменты и бенчмарки здесь отделены от самих техник.</p>
+          </div>
+          <span>8 источников</span>
+        </div>
+        <div class="source-grid" id="source-grid"></div>
+      </section>
+      <footer>Локальный учебный справочник · примеры и критерии проверки составлены для этого приложения.</footer>
+    </div>
+  </body>
+</html>
